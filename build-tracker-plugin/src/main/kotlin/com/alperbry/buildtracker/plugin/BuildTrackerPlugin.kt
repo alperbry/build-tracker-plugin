@@ -1,4 +1,11 @@
 package com.alperbry.buildtracker.plugin
 
-class BuildTrackerPlugin {
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
+class BuildTrackerPlugin : Plugin<Project> {
+
+    override fun apply(project: Project) {
+        TODO("Not yet implemented")
+    }
 }

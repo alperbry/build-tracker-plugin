@@ -15,7 +15,7 @@ open class BuildEnvironmentMetadataTask @Inject constructor(
 
     @TaskAction
     fun execute() {
-        val operatingSystem = resolver.operatingSystem()
-        println(operatingSystem)
+        val operatingSystemInfo = resolver.operatingSystemInformation()
+        println(operatingSystemInfo)
     }
 }

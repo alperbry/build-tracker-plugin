@@ -1,8 +1,8 @@
 package com.alperbry.buildtracker.util.environment
 
-import com.alperbry.buildtracker.data.OperatingSystem
+import com.alperbry.buildtracker.data.OperatingSystemInformation
 
 interface OperatingSystemResolver {
 
-    fun operatingSystem(): OperatingSystem
+    fun operatingSystemInformation(): OperatingSystemInformation
 }

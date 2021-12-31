@@ -105,3 +105,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# To be removed, related to local publishing of plugin
+repo/*

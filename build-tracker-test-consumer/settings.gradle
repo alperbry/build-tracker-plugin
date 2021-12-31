@@ -1,2 +1,13 @@
-rootProject.name = 'build-tracker-test-consumer'
+pluginManagement {
+    repositories {
+        maven {
+            url = "/Users/alperboray/Documents/hobby/build-tracker/android-plugin/repo/"
+        }
+        maven {
+            url 'maven-repo'
+        }
+        gradlePluginPortal()
+    }
+}
 
+rootProject.name = 'build-tracker-test-consumer'

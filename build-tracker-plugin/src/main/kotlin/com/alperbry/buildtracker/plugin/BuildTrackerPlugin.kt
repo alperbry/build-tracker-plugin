@@ -11,7 +11,7 @@ class BuildTrackerPlugin : Plugin<Project> {
         project.tasks.register(
             "operatingSystem",
             BuildEnvironmentMetadataTask::class.java,
-            EnvironmentInformationDependencyProviderImpl()
+            EnvironmentInformationDependencyProviderImpl(project)
         )
     }
 }

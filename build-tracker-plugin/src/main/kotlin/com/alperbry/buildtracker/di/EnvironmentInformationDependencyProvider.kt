@@ -20,7 +20,6 @@ class EnvironmentInformationDependencyProviderImpl(
     private val project: Project
 ) : EnvironmentInformationDependencyProvider {
 
-
     override fun operatingSystemResolver() = OperatingSystemResolverImpl(SystemRepositoryImpl())
 
     override fun hardwareResolver() = HardwareResolverImpl(HardwareRepositoryForUnix(CommandLineExecutorImpl(project)))

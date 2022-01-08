@@ -39,34 +39,3 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
         //project.tasks.findByName("clean")//?
     }
 }
-
-
-interface AndroidBuildTrackerHelper <T> {
-    fun withExtensions(project: Project, block: (T) -> Unit)
-}
-
-class ApplicationBuildTrackerHelper(
-    private val mapper: AndroidExtensionMapper
-) : AndroidBuildTrackerHelper<BuildTrackerAndroidExtensions> {
-
-    override fun withExtensions(project: Project, block: (BuildTrackerAndroidExtensions) -> Unit) {
-        extension<AppExtension>(project).applicationVariants.all { variant ->
-            mapper.map(variant).let(block)
-        }
-    }
-}
-
-class LibraryBuildTrackerHelper(
-    private val mapper: AndroidExtensionMapper
-) : AndroidBuildTrackerHelper<BuildTrackerAndroidExtensions> {
-
-    override fun withExtensions(project: Project, block: (BuildTrackerAndroidExtensions) -> Unit) {
-        extension<LibraryExtension>(project).libraryVariants.all { variant ->
-            mapper.map(variant).let(block)
-        }
-    }
-}
-
-inline fun <reified T : BaseExtension> extension(project: Project): T {
-    return project.extensions.getByType(T::class.java)
-}

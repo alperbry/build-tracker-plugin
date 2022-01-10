@@ -22,7 +22,7 @@ class AndroidProjectTypeResolverImpl : AndroidProjectTypeResolver {
 
     private fun isAndroidLibrary(pluginAware: PluginAware) = pluginAware.hasPlugin("com.android.library")
 
-    private fun isAndroidFeature(pluginAware: PluginAware) = pluginAware.hasPlugin("com.android.feature")
+    private fun isAndroidFeature(pluginAware: PluginAware) = pluginAware.hasPlugin("com.android.dynamic-feature")
 
     private fun PluginAware.hasPlugin(id: String) = plugins.hasPlugin(id)
 }

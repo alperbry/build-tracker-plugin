@@ -26,7 +26,7 @@ class AndroidDependencyProviderImpl : AndroidDependencyProvider {
         return when (type) {
             APPLICATION -> ApplicationBuildTrackerHelper(variantMapper)
             LIBRARY -> LibraryBuildTrackerHelper(variantMapper)
-            FEATURE -> LibraryBuildTrackerHelper(variantMapper)
+            FEATURE -> ApplicationBuildTrackerHelper(variantMapper)
         }
     }
 }

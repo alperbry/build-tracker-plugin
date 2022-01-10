@@ -7,23 +7,31 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 
 class ApplicationBuildTrackerHelper(
-    private val mapper: AndroidExtensionMapper
+    private val mapper: AndroidVariantMapper
 ) : AndroidPluginHelper<BuildTrackerAndroidExtensions> {
 
     override fun withExtensions(project: Project, block: (BuildTrackerAndroidExtensions) -> Unit) {
-        extension<AppExtension>(project).applicationVariants.all { variant ->
-            mapper.map(variant).let(block)
+        val extension = extension<AppExtension>(project)
+        extension.applicationVariants.all { appVariant ->
+            BuildTrackerAndroidExtensions(
+                sdkDirectory = extension.sdkDirectory,
+                variant = mapper.map(variant = appVariant)
+            ).let(block)
         }
     }
 }
 
 class LibraryBuildTrackerHelper(
-    private val mapper: AndroidExtensionMapper
+    private val mapper: AndroidVariantMapper
 ) : AndroidPluginHelper<BuildTrackerAndroidExtensions> {
 
     override fun withExtensions(project: Project, block: (BuildTrackerAndroidExtensions) -> Unit) {
-        extension<LibraryExtension>(project).libraryVariants.all { variant ->
-            mapper.map(variant).let(block)
+        val extension = extension<LibraryExtension>(project)
+        extension.libraryVariants.all { libVariant ->
+            BuildTrackerAndroidExtensions(
+                sdkDirectory = extension.sdkDirectory,
+                variant = mapper.map(variant = libVariant)
+            ).let(block)
         }
     }
 }

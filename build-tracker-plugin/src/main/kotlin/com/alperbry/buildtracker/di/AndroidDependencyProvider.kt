@@ -11,13 +11,18 @@ import com.alperbry.buildtracker.util.android.AndroidVariantMapperImpl
 import com.alperbry.buildtracker.util.android.ApplicationBuildTrackerHelper
 import com.alperbry.buildtracker.util.android.LibraryBuildTrackerHelper
 
-class AndroidDependencyProvider {
+interface AndroidDependencyProvider {
+
+    fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions>
+}
+
+class AndroidDependencyProviderImpl : AndroidDependencyProvider {
 
     private val variantMapper: AndroidVariantMapper by lazy {
         AndroidVariantMapperImpl()
     }
 
-    fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions> {
+    override fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions> {
         return when (type) {
             APPLICATION -> ApplicationBuildTrackerHelper(variantMapper)
             LIBRARY -> LibraryBuildTrackerHelper(variantMapper)

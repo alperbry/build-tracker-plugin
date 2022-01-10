@@ -1,9 +1,13 @@
 package com.alperbry.buildtracker.plugin
 
+import com.alperbry.buildtracker.di.AndroidBuildDependencyProvider
+import com.alperbry.buildtracker.di.AndroidBuildDependencyProviderImpl
 import com.alperbry.buildtracker.di.AndroidDependencyProvider
+import com.alperbry.buildtracker.di.AndroidDependencyProviderImpl
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
+import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
 import org.gradle.api.Plugin
@@ -13,7 +17,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     private val resolverDependencyProvider: ProjectResolverDependencyProvider = ProjectResolverDependencyProviderImpl()
 
-    private val androidDependencyProvider: AndroidDependencyProvider = AndroidDependencyProvider()
+    private val androidDependencyProvider: AndroidDependencyProvider = AndroidDependencyProviderImpl()
 
     private val projectTypeResolver: AndroidProjectTypeResolver
         get() = resolverDependencyProvider.androidProjectTypeResolver()
@@ -31,6 +35,17 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
                 BuildEnvironmentMetadataTask::class.java,
                 EnvironmentInformationDependencyProviderImpl(project)
             )
+
+            val androidMetadataTask = project.tasks.register(
+                "androidOutputMetadataTask${androidExtensions.variant.variantName.capitalize()}",
+                AndroidOutputMetadataTask::class.java,
+                AndroidBuildDependencyProviderImpl(project),
+                androidExtensions
+            )
+
+            project.tasks.named(assembleTask).configure {
+                it.finalizedBy(androidMetadataTask)
+            }
         }
 
         //project.tasks.findByName("clean")//?

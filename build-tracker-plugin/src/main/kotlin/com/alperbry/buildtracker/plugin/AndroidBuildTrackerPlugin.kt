@@ -6,8 +6,10 @@ import com.alperbry.buildtracker.di.AndroidDependencyProviderImpl
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
+import com.alperbry.buildtracker.di.VCSDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
+import com.alperbry.buildtracker.task.VCSMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
 import com.alperbry.buildtracker.util.taskexecution.TimeTrackerExecutionListener
 import org.gradle.api.Plugin
@@ -35,10 +37,16 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
             val assembleTask = androidExtensions.variant.assembleTask
 
-            project.tasks.register(
+            val osTask = project.tasks.register(
                 "operatingSystemTask${androidExtensions.variant.variantName.capitalize()}",
                 BuildEnvironmentMetadataTask::class.java,
                 EnvironmentInformationDependencyProviderImpl(project)
+            )
+
+            val vcsTask = project.tasks.register(
+                "vcsMetadataTask${androidExtensions.variant.variantName.capitalize()}",
+                VCSMetadataTask::class.java,
+                VCSDependencyProviderImpl(project)
             )
 
             val androidMetadataTask = project.tasks.register(
@@ -50,6 +58,11 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
             project.tasks.named(assembleTask).configure {
                 it.finalizedBy(androidMetadataTask)
+            }
+
+            androidMetadataTask.configure {
+                it.dependsOn(osTask)
+                it.dependsOn(vcsTask)
             }
         }
 

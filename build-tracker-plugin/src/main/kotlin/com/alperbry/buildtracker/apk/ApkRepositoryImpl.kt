@@ -18,17 +18,6 @@ class ApkRepositoryImpl(
         ).trim()
     }
 
-    override fun packageName(sdkDirectory: File, apkDirectory: File): String {
-        val apkAnalyzer = sdkDirectory.routeToApkAnalyzer()
-
-        return commandLineExecutor.execute(
-            apkAnalyzer.absolutePath,
-            "manifest",
-            "application-id",
-            apkDirectory.absolutePath
-        ).trim()
-    }
-
     override fun versionCode(sdkDirectory: File, apkDirectory: File): Int {
         val apkAnalyzer = sdkDirectory.routeToApkAnalyzer()
 
@@ -43,4 +32,4 @@ class ApkRepositoryImpl(
     private fun File.routeToApkAnalyzer() = File(this, ROUTE_TO_APK_ANALYZER)
 }
 
-private const val ROUTE_TO_APK_ANALYZER = "/tools/bin/apkanalyzer"
+private const val ROUTE_TO_APK_ANALYZER = "/tools/bin/apkanalyzer" // todo add support also for windows

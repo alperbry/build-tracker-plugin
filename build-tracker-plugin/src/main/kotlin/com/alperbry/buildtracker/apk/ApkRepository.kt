@@ -6,7 +6,5 @@ interface ApkRepository {
 
     fun applicationId(sdkDirectory: File, apkDirectory: File): String
 
-    fun packageName(sdkDirectory: File, apkDirectory: File): String
-
     fun versionCode(sdkDirectory: File, apkDirectory: File): Int
 }

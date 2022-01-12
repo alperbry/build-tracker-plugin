@@ -7,8 +7,10 @@ import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
 import com.alperbry.buildtracker.data.android.AndroidProjectType.LIBRARY
 import com.alperbry.buildtracker.util.android.AndroidBuildResolver
 import com.alperbry.buildtracker.util.android.apk.ApkBuildResolverImpl
+import com.alperbry.buildtracker.util.android.id.ProjectIdGeneratorImpl
 import com.alperbry.buildtracker.util.android.library.LibraryBuildResolverImpl
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutorImpl
+import com.alperbry.buildtracker.util.git.GitResolverImpl
 import org.gradle.api.Project
 
 interface AndroidBuildDependencyProvider {
@@ -20,12 +22,16 @@ class AndroidBuildDependencyProviderImpl(
     private val project: Project
 ) : AndroidBuildDependencyProvider {
 
+    private val commandLineExecutor by lazy {
+        CommandLineExecutorImpl(project)
+    }
+
     private val apkResolver by lazy {
-        ApkBuildResolverImpl(ApkRepositoryImpl(CommandLineExecutorImpl(project)))
+        ApkBuildResolverImpl(ApkRepositoryImpl(commandLineExecutor))
     }
 
     private val libraryResolver by lazy {
-        LibraryBuildResolverImpl() // todo fixme
+        LibraryBuildResolverImpl(ProjectIdGeneratorImpl(GitResolverImpl(commandLineExecutor), project)) // todo fixme
     }
 
     override fun buildResolver(projectType: AndroidProjectType) = when (projectType) {

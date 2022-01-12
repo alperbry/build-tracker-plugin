@@ -14,7 +14,7 @@ class ApkBuildResolverImpl(
         val apkDirectory = extension.variant.outputFiles.first() // todo fixme bundle support needed
 
         return AndroidBuildMetadata(
-            applicationId = repository.applicationId(
+            id = repository.applicationId(
                 sdkDirectory,
                 apkDirectory
             ),

@@ -1,6 +1,5 @@
 package com.alperbry.buildtracker.plugin
 
-import com.alperbry.buildtracker.di.AndroidBuildDependencyProvider
 import com.alperbry.buildtracker.di.AndroidBuildDependencyProviderImpl
 import com.alperbry.buildtracker.di.AndroidDependencyProvider
 import com.alperbry.buildtracker.di.AndroidDependencyProviderImpl
@@ -10,6 +9,7 @@ import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
+import com.alperbry.buildtracker.util.taskexecution.TimeTrackerExecutionListener
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -23,6 +23,11 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
         get() = resolverDependencyProvider.androidProjectTypeResolver()
 
     override fun apply(project: Project) {
+
+        val timeTrackerExecutionListener = TimeTrackerExecutionListener()
+
+        project.gradle.addBuildListener(timeTrackerExecutionListener)
+        //project.gradle.taskGraph.addTaskExecutionListener(timeTrackerExecutionListener)
 
         androidDependencyProvider.buildTrackerHelper(
             projectTypeResolver.type(project)

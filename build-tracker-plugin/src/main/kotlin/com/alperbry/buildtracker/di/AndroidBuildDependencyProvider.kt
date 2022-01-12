@@ -1,14 +1,19 @@
 package com.alperbry.buildtracker.di
 
 import com.alperbry.buildtracker.apk.ApkRepositoryImpl
-import com.alperbry.buildtracker.util.android.apk.ApkResolver
-import com.alperbry.buildtracker.util.android.apk.ApkResolverImpl
+import com.alperbry.buildtracker.data.android.AndroidProjectType
+import com.alperbry.buildtracker.data.android.AndroidProjectType.APPLICATION
+import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
+import com.alperbry.buildtracker.data.android.AndroidProjectType.LIBRARY
+import com.alperbry.buildtracker.util.android.AndroidBuildResolver
+import com.alperbry.buildtracker.util.android.apk.ApkBuildResolverImpl
+import com.alperbry.buildtracker.util.android.library.LibraryBuildResolverImpl
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutorImpl
 import org.gradle.api.Project
 
 interface AndroidBuildDependencyProvider {
 
-    fun apkResolver(): ApkResolver
+    fun buildResolver(projectType: AndroidProjectType): AndroidBuildResolver
 }
 
 class AndroidBuildDependencyProviderImpl(
@@ -16,8 +21,16 @@ class AndroidBuildDependencyProviderImpl(
 ) : AndroidBuildDependencyProvider {
 
     private val apkResolver by lazy {
-        ApkResolverImpl(ApkRepositoryImpl(CommandLineExecutorImpl(project)))
+        ApkBuildResolverImpl(ApkRepositoryImpl(CommandLineExecutorImpl(project)))
     }
 
-    override fun apkResolver() = apkResolver
+    private val libraryResolver by lazy {
+        LibraryBuildResolverImpl() // todo fixme
+    }
+
+    override fun buildResolver(projectType: AndroidProjectType) = when (projectType) {
+        APPLICATION -> apkResolver
+        LIBRARY -> libraryResolver
+        FEATURE -> libraryResolver
+    }
 }

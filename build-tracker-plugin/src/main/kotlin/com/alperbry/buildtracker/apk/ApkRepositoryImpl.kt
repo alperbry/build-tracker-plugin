@@ -18,6 +18,17 @@ class ApkRepositoryImpl(
         ).trim()
     }
 
+    override fun packageName(sdkDirectory: File, apkDirectory: File): String {
+        val apkAnalyzer = sdkDirectory.routeToApkAnalyzer()
+
+        return commandLineExecutor.execute(
+            apkAnalyzer.absolutePath,
+            "manifest",
+            "application-id",
+            apkDirectory.absolutePath
+        ).trim()
+    }
+
     override fun versionCode(sdkDirectory: File, apkDirectory: File): Int {
         val apkAnalyzer = sdkDirectory.routeToApkAnalyzer()
 

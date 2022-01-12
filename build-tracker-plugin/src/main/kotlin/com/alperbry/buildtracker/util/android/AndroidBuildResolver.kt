@@ -1,9 +1,9 @@
-package com.alperbry.buildtracker.util.android.apk
+package com.alperbry.buildtracker.util.android
 
 import com.alperbry.buildtracker.data.android.AndroidBuildMetadata
 import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
 
-interface ApkResolver {
+interface AndroidBuildResolver {
 
     fun buildInfo(extension: BuildTrackerAndroidExtensions): AndroidBuildMetadata
 }

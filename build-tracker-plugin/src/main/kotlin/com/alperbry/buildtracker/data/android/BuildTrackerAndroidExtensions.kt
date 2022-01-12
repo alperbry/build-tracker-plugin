@@ -5,7 +5,8 @@ import java.io.File
 // Per each variant
 data class BuildTrackerAndroidExtensions(
     val sdkDirectory: File,
-    val variant: Variant
+    val variant: Variant,
+    val projectType: AndroidProjectType
 )
 
 data class Variant(

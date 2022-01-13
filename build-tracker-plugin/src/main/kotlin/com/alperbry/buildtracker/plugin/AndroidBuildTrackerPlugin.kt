@@ -9,9 +9,11 @@ import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
 import com.alperbry.buildtracker.di.VCSDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
+import com.alperbry.buildtracker.task.BuildDataReporterTask
 import com.alperbry.buildtracker.task.VCSMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
 import com.alperbry.buildtracker.util.taskexecution.TimeTrackerExecutionListener
+import com.alperbry.buildtracker.util.timer.TimerImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -26,28 +28,31 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
-        val timeTrackerExecutionListener = TimeTrackerExecutionListener()
+        val osTask = project.tasks.register(
+            "operatingSystemTask",
+            BuildEnvironmentMetadataTask::class.java,
+            EnvironmentInformationDependencyProviderImpl(project)
+        )
 
-        project.gradle.addBuildListener(timeTrackerExecutionListener)
-        //project.gradle.taskGraph.addTaskExecutionListener(timeTrackerExecutionListener)
+        val vcsTask = project.tasks.register(
+            "vcsMetadataTask",
+            VCSMetadataTask::class.java,
+            VCSDependencyProviderImpl(project)
+        )
+
+        val reporterTask = project.tasks.register(
+            "finalReporterTask",
+            BuildDataReporterTask::class.java
+        )
+
+        val timeTracker = TimeTrackerExecutionListener(TimerImpl(), reporterTask.name)
+        project.gradle.addListener(timeTracker)
 
         androidDependencyProvider.buildTrackerHelper(
             projectTypeResolver.type(project)
         ).withExtensions(project) { androidExtensions ->
 
             val assembleTask = androidExtensions.variant.assembleTask
-
-            val osTask = project.tasks.register(
-                "operatingSystemTask${androidExtensions.variant.variantName.capitalize()}",
-                BuildEnvironmentMetadataTask::class.java,
-                EnvironmentInformationDependencyProviderImpl(project)
-            )
-
-            val vcsTask = project.tasks.register(
-                "vcsMetadataTask${androidExtensions.variant.variantName.capitalize()}",
-                VCSMetadataTask::class.java,
-                VCSDependencyProviderImpl(project)
-            )
 
             val androidMetadataTask = project.tasks.register(
                 "androidOutputMetadataTask${androidExtensions.variant.variantName.capitalize()}",
@@ -56,16 +61,19 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
                 androidExtensions
             )
 
-            project.tasks.named(assembleTask).configure {
-                it.finalizedBy(androidMetadataTask)
+            project.tasks.named(assembleTask).configure { assemble ->
+                assemble.finalizedBy(androidMetadataTask)
             }
 
             androidMetadataTask.configure {
                 it.dependsOn(osTask)
                 it.dependsOn(vcsTask)
+                it.finalizedBy(reporterTask)
+            }
+
+            reporterTask.configure {
+                it.mustRunAfter(assembleTask)
             }
         }
-
-        //project.tasks.findByName("clean")//?
     }
 }

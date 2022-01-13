@@ -1,5 +1,6 @@
 package com.alperbry.buildtracker.util.taskexecution
 
+import com.alperbry.buildtracker.util.timer.Timer
 import org.gradle.BuildListener
 import org.gradle.BuildResult
 import org.gradle.api.Task
@@ -7,41 +8,23 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
-import java.time.Instant
 
-class TimeTrackerExecutionListener : TaskExecutionListener, BuildListener {
+class TimeTrackerExecutionListener(
+    private val timer: Timer,
+    private val finalTaskName: String
+) : TaskExecutionListener {
 
-    private val taskHashToStartMap = mutableMapOf<Int, Long>()
-
-    private val durations = mutableListOf<Long>()
+    init {
+        timer.start()
+    }
 
     override fun beforeExecute(task: Task) {
-        taskHashToStartMap.put(task.hashCode(), System.currentTimeMillis())
+        if (task.name == finalTaskName) {
+            print("FINAL DURATION IN MS: ${timer.duration()}ms")
+        }
     }
 
     override fun afterExecute(task: Task, taskState: TaskState) {
-
-        if (taskHashToStartMap.containsKey(task.hashCode()).not()) return
-
-        val now = System.currentTimeMillis()
-        val result = now - taskHashToStartMap[task.hashCode()]!!
-        durations.add(result)
-        println("${task.name} duration: $result ${taskState.executed}")
-    }
-
-    override fun buildFinished(buildResult: BuildResult) {
-        println(durations.sum())
-    }
-
-    override fun settingsEvaluated(p0: Settings) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun projectsLoaded(p0: Gradle) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun projectsEvaluated(p0: Gradle) {
-        //TODO("Not yet implemented")
+        // No-op.
     }
 }

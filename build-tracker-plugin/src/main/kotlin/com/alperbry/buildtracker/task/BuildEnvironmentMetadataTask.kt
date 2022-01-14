@@ -1,5 +1,6 @@
 package com.alperbry.buildtracker.task
 
+import com.alperbry.buildtracker.cache.BuildInformationCache
 import com.alperbry.buildtracker.data.BuildEnvironmentMetadata
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProvider
 import com.alperbry.buildtracker.util.environment.HardwareResolver
@@ -9,7 +10,8 @@ import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
 open class BuildEnvironmentMetadataTask @Inject constructor(
-    private val provider: EnvironmentInformationDependencyProvider
+    private val provider: EnvironmentInformationDependencyProvider,
+    private val cache: BuildInformationCache<*>
 ) : DefaultTask() {
 
     private val osResolver: OperatingSystemResolver
@@ -21,9 +23,8 @@ open class BuildEnvironmentMetadataTask @Inject constructor(
     @TaskAction
     fun execute() {
         val operatingSystemInfo = osResolver.operatingSystemInformation()
-
         val hardwareInfo = hardwareResolver.hardwareInfo()
 
-        println(BuildEnvironmentMetadata(operatingSystemInfo, hardwareInfo))
+        cache.environmentData = BuildEnvironmentMetadata(operatingSystemInfo, hardwareInfo)
     }
 }

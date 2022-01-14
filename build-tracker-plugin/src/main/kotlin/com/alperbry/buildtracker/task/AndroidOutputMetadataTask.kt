@@ -1,5 +1,7 @@
 package com.alperbry.buildtracker.task
 
+import com.alperbry.buildtracker.cache.BuildInformationCache
+import com.alperbry.buildtracker.data.android.AndroidBuildMetadata
 import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
 import com.alperbry.buildtracker.di.AndroidBuildDependencyProvider
 import com.alperbry.buildtracker.util.android.AndroidBuildResolver
@@ -9,7 +11,8 @@ import org.gradle.api.tasks.TaskAction
 
 open class AndroidOutputMetadataTask @Inject constructor(
     private val provider: AndroidBuildDependencyProvider,
-    private val extension: BuildTrackerAndroidExtensions
+    private val extension: BuildTrackerAndroidExtensions,
+    private val cache: BuildInformationCache<AndroidBuildMetadata>
 ) : DefaultTask() {
 
     private val buildResolver: AndroidBuildResolver
@@ -17,7 +20,8 @@ open class AndroidOutputMetadataTask @Inject constructor(
 
     @TaskAction
     fun execute() {
-
-        println(buildResolver.buildInfo(extension))
+        cache.outputList.add(
+            buildResolver.buildInfo(extension)
+        )
     }
 }

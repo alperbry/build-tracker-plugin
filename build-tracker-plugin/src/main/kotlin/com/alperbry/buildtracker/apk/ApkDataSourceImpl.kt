@@ -3,9 +3,9 @@ package com.alperbry.buildtracker.apk
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutor
 import java.io.File
 
-class ApkRepositoryImpl(
+class ApkDataSourceImpl(
     private val commandLineExecutor: CommandLineExecutor
-) : ApkRepository {
+) : ApkDataSource {
 
     override fun applicationId(sdkDirectory: File, apkDirectory: File): String {
         val apkAnalyzer = sdkDirectory.routeToApkAnalyzer()

@@ -1,6 +1,6 @@
 package com.alperbry.buildtracker.system
 
-interface SystemRepository {
+interface SystemDataSource {
 
     val osName: String
 

@@ -1,18 +1,18 @@
 package com.alperbry.buildtracker.util.environment
 
 import com.alperbry.buildtracker.data.HardwareInformation
-import com.alperbry.buildtracker.system.HardwareRepository
+import com.alperbry.buildtracker.system.HardwareDataSource
 
 class HardwareResolverImpl(
-    private val repository: HardwareRepository
+    private val source: HardwareDataSource
 ) : HardwareResolver {
 
     override fun hardwareInfo(): HardwareInformation {
         return HardwareInformation(
-            cpuModelName = repository.cpuBrand(),
-            physicalMemoryInMb = repository.totalPhysicalMemory()?.div(MODULO_FROM_BYTE_TO_MB) ?: -1,
-            environmentIdentifier = repository.environmentIdentifier(),
-            coreCount = repository.coreCount()
+            cpuModelName = source.cpuBrand(),
+            physicalMemoryInMb = source.totalPhysicalMemory()?.div(MODULO_FROM_BYTE_TO_MB) ?: -1,
+            environmentIdentifier = source.environmentIdentifier(),
+            coreCount = source.coreCount()
         )
     }
 }

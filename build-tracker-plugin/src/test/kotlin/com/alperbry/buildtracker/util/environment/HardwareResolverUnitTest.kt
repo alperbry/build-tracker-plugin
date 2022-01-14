@@ -1,6 +1,6 @@
 package com.alperbry.buildtracker.util.environment
 
-import com.alperbry.buildtracker.system.HardwareRepository
+import com.alperbry.buildtracker.system.HardwareDataSource
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class HardwareResolverUnitTest {
 
     @MockK
-    lateinit var repository: HardwareRepository
+    lateinit var repository: HardwareDataSource
 
     private lateinit var resolver: HardwareResolver
 

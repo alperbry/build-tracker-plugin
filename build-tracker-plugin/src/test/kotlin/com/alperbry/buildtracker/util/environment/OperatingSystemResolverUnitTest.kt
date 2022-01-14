@@ -1,7 +1,7 @@
 package com.alperbry.buildtracker.util.environment
 
 import com.alperbry.buildtracker.data.OperatingSystem
-import com.alperbry.buildtracker.system.SystemRepository
+import com.alperbry.buildtracker.system.SystemDataSource
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class OperatingSystemResolverUnitTest {
 
     @MockK
-    lateinit var repository: SystemRepository
+    lateinit var repository: SystemDataSource
 
     private lateinit var resolver: OperatingSystemResolver
 

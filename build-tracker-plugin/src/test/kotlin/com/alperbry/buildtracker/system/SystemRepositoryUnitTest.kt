@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class SystemRepositoryUnitTest {
 
-    private val repository = SystemRepositoryImpl()
+    private val repository = SystemDataSourceImpl()
 
     @BeforeEach
     fun setup() {

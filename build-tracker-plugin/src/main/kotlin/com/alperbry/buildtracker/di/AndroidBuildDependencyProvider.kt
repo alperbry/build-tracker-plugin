@@ -1,6 +1,6 @@
 package com.alperbry.buildtracker.di
 
-import com.alperbry.buildtracker.apk.ApkRepositoryImpl
+import com.alperbry.buildtracker.apk.ApkDataSourceImpl
 import com.alperbry.buildtracker.data.android.AndroidProjectType
 import com.alperbry.buildtracker.data.android.AndroidProjectType.APPLICATION
 import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
@@ -27,7 +27,7 @@ class AndroidBuildDependencyProviderImpl(
     }
 
     private val apkResolver by lazy {
-        ApkBuildResolverImpl(ApkRepositoryImpl(commandLineExecutor))
+        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor))
     }
 
     private val libraryResolver by lazy {

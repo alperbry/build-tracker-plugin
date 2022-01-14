@@ -2,7 +2,7 @@ package com.alperbry.buildtracker.apk
 
 import java.io.File
 
-interface ApkRepository {
+interface ApkDataSource {
 
     fun applicationId(sdkDirectory: File, apkDirectory: File): String
 

@@ -12,7 +12,7 @@ class CommandLineExecutorImpl(
 
     override fun execute(vararg cmd: String): String {
         val outputStream = ByteArrayOutputStream()
-        val execSpec = actionFactory.create(cmd, outputStream)
+        val execSpec = actionFactory.create(outputStream, *cmd)
         project.exec(execSpec)
 
         return outputStream.toString()
@@ -20,20 +20,21 @@ class CommandLineExecutorImpl(
 }
 
 class CommandLineExecSpecAction(
-    private val commands: Array<out String>,
+    private val commands: List<String>,
     private val outputStream: ByteArrayOutputStream
 ) : Action<ExecSpec> {
 
     override fun execute(execSpec: ExecSpec) {
-        execSpec.setCommandLine(commands)
+        execSpec.commandLine = commands
         execSpec.standardOutput = outputStream
+        execSpec.errorOutput = ByteArrayOutputStream() // todo
     }
 }
 
 class CommandLineExecSpecActionFactory {
 
     fun create(
-        commands: Array<out String>,
-        outputStream: ByteArrayOutputStream
-    ): Action<ExecSpec> = CommandLineExecSpecAction(commands, outputStream)
+        outputStream: ByteArrayOutputStream,
+        vararg commands: String,
+    ): Action<ExecSpec> = CommandLineExecSpecAction(commands.toList(), outputStream)
 }

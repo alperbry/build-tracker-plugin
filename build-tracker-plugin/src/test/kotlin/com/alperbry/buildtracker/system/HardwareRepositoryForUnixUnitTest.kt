@@ -16,11 +16,11 @@ class HardwareRepositoryForUnixUnitTest {
     @RelaxedMockK
     lateinit var executor: CommandLineExecutor
 
-    private lateinit var repositoryForUnix: HardwareRepositoryForUnix
+    private lateinit var repositoryForUnix: HardwareDataSourceForUnix
 
     @BeforeEach
     fun setup() {
-        repositoryForUnix = HardwareRepositoryForUnix(executor)
+        repositoryForUnix = HardwareDataSourceForUnix(executor)
     }
 
     @Test

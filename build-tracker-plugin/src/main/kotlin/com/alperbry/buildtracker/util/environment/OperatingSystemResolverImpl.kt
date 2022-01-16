@@ -2,17 +2,17 @@ package com.alperbry.buildtracker.util.environment
 
 import com.alperbry.buildtracker.data.OperatingSystem
 import com.alperbry.buildtracker.data.OperatingSystemInformation
-import com.alperbry.buildtracker.system.SystemRepository
+import com.alperbry.buildtracker.system.SystemDataSource
 
 class OperatingSystemResolverImpl(
-    private val systemRepository: SystemRepository
+    private val source: SystemDataSource
 ) : OperatingSystemResolver {
 
     override fun operatingSystemInformation(): OperatingSystemInformation {
         return OperatingSystemInformation(
-            name = systemRepository.osName.resolveOperatingSystem(),
-            architecture = systemRepository.architecture,
-            version = systemRepository.version
+            name = source.osName.resolveOperatingSystem(),
+            architecture = source.architecture,
+            version = source.version
         )
     }
 

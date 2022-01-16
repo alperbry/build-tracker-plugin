@@ -1,6 +1,6 @@
 package com.alperbry.buildtracker.system
 
-interface HardwareRepository {
+interface HardwareDataSource {
 
     fun cpuBrand(): String
 

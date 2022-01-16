@@ -32,7 +32,7 @@ class CommandLineExecutorUnitTest {
     fun setup() {
         executor = CommandLineExecutorImpl(project, actionFactory)
 
-        every { actionFactory.create(any(), any()) } returns action
+        every { actionFactory.create(any(), any(), any()) } returns action
     }
 
     @Test
@@ -46,7 +46,7 @@ class CommandLineExecutorUnitTest {
 
         // Then
         verify {
-            actionFactory.create(arrayOf(command, option), any())
+            actionFactory.create(any(), command, option)
             project.exec(action)
         }
     }
@@ -58,14 +58,14 @@ class CommandLineExecutorUnitTest {
         val command = "command"
         val option = "-n"
         val outputStream = ByteArrayOutputStream()
-        val action = CommandLineExecSpecAction(arrayOf(command, option), outputStream)
+        val action = CommandLineExecSpecAction(listOf(command, option), outputStream)
 
         // When
         action.execute(execSpec)
 
         // Then
         verify {
-            execSpec.setCommandLine(arrayOf(command, option))
+            execSpec.commandLine = listOf(command, option)
             execSpec.standardOutput = outputStream
         }
     }
@@ -78,7 +78,7 @@ class CommandLineExecutorUnitTest {
         val factory = CommandLineExecSpecActionFactory()
 
         // When
-        val result = factory.create(commands, outputStream)
+        val result = factory.create(outputStream, *commands)
 
         // Then
         result.shouldBeInstanceOf<CommandLineExecSpecAction>()

@@ -2,9 +2,9 @@ package com.alperbry.buildtracker.system
 
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutor
 
-class HardwareRepositoryForUnix(
+class HardwareDataSourceForUnix(
     private val executor: CommandLineExecutor
-) : HardwareRepository {
+) : HardwareDataSource {
 
     override fun cpuBrand(): String {
         return executor.execute(

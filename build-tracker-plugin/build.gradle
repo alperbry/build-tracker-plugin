@@ -1,0 +1,52 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id 'java'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group 'com.alperbry'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    gradleApi()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'com.android.tools.build:gradle:4.0.2'
+
+    testImplementation "io.mockk:mockk:1.12.2"
+    testImplementation 'io.kotest:kotest-assertions-core:5.0.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+gradlePlugin {
+    plugins {
+        buildTrackerPlugin {
+            id = "com.alperbry.buildtracker"
+            implementationClass = "com.alperbry.buildtracker.plugin.BuildTrackerPlugin"
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "$projectDir/../repo"
+        }
+    }
+}

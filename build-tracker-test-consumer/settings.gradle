@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        maven {
+            url = "/Users/alperboray/Documents/hobby/build-tracker/android-plugin/repo/"
+        }
+        maven {
+            url 'maven-repo'
+        }
+        gradlePluginPortal()
+        google()
+    }
+}
+
+rootProject.name = 'build-tracker-test-consumer'

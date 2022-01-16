@@ -16,7 +16,6 @@ import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
 import com.alperbry.buildtracker.task.BuildDataReporterTask
 import com.alperbry.buildtracker.task.VCSMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
-import com.alperbry.buildtracker.util.taskexecution.TimeTracker
 import com.alperbry.buildtracker.util.timer.TimerImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -34,6 +33,10 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     private val cache: BuildInformationCache<AndroidBuildMetadata>
         get() = cacheDependencyProvider.androidBuildCache()
+
+    private val timer = TimerImpl().also {
+        it.start()
+    }
 
     override fun apply(project: Project) {
 
@@ -56,11 +59,9 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
         val reporterTask = project.tasks.register(
             "finalReporterTask",
             BuildDataReporterTask::class.java,
-            cache
+            cache,
+            timer
         )
-
-        val timeTracker = TimeTracker(TimerImpl(), reporterTask.name, cache)
-        project.gradle.addListener(timeTracker)
 
         androidDependencyProvider.buildTrackerHelper(
             projectTypeResolver.type(project)
@@ -88,7 +89,10 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
             reporterTask.configure {
                 it.mustRunAfter(assembleTask)
+                it.mustRunAfter(BUILD_TASK)
             }
         }
     }
 }
+
+private const val BUILD_TASK = "build"

@@ -37,6 +37,8 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
+        val vcsDependencyProvider = VCSDependencyProviderImpl(project)
+
         val osTask = project.tasks.register(
             "operatingSystemTask",
             BuildEnvironmentMetadataTask::class.java,
@@ -47,7 +49,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
         val vcsTask = project.tasks.register(
             "vcsMetadataTask",
             VCSMetadataTask::class.java,
-            VCSDependencyProviderImpl(project),
+            vcsDependencyProvider,
             cache
         )
 
@@ -69,7 +71,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
             val androidMetadataTask = project.tasks.register(
                 "androidOutputMetadataTask${androidExtensions.variant.variantName.capitalize()}",
                 AndroidOutputMetadataTask::class.java,
-                AndroidBuildDependencyProviderImpl(project),
+                AndroidBuildDependencyProviderImpl(project, vcsDependencyProvider),
                 androidExtensions,
                 cache
             )

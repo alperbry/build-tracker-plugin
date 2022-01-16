@@ -1,17 +1,14 @@
 package com.alperbry.buildtracker.util.git
 
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutor
+import com.alperbry.buildtracker.util.vcs.VCSInfoResolver
 import java.io.File
 
 class GitResolverImpl(
     private val executor: CommandLineExecutor
-) : GitResolver {
+) : VCSInfoResolver {
 
-    override fun isGitRepository(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun revision(): String {
+    override fun stateIdentifier(): String {
         return executor.execute(
             "git",
             "rev-parse",

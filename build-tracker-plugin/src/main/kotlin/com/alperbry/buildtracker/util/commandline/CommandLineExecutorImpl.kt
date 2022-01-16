@@ -27,6 +27,7 @@ class CommandLineExecSpecAction(
     override fun execute(execSpec: ExecSpec) {
         execSpec.commandLine = commands
         execSpec.standardOutput = outputStream
+        execSpec.errorOutput = ByteArrayOutputStream() // todo
     }
 }
 

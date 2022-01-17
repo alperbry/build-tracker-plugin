@@ -28,15 +28,15 @@ class AndroidBuildDependencyProviderImpl(
         CommandLineExecutorImpl(project)
     }
 
-    private val apkResolver by lazy {
-        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor))
-    }
-
     private val vcsResolver: VCSInfoResolver
         get() = vcsProvider.informationResolver()
 
+    private val apkResolver by lazy {
+        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor), vcsResolver)
+    }
+
     private val libraryResolver by lazy {
-        LibraryBuildResolverImpl(ProjectIdGeneratorImpl(vcsResolver, project))
+        LibraryBuildResolverImpl(ProjectIdGeneratorImpl(vcsResolver, project), vcsResolver)
     }
 
     override fun buildResolver(projectType: AndroidProjectType) = when (projectType) {

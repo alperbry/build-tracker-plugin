@@ -1,28 +1,21 @@
 package com.alperbry.buildtracker.cache
 
 import com.alperbry.buildtracker.data.BuildEnvironmentMetadata
+import com.alperbry.buildtracker.data.BuildInfo
 import com.alperbry.buildtracker.data.VersionControlMetadata
-import com.alperbry.buildtracker.data.android.AndroidBuildMetadata
+import com.alperbry.buildtracker.data.android.AndroidBuildInfo
 
-interface BuildInformationCache <T> {
+interface BuildInformationCache <T : BuildInfo> {
 
     var environmentData: BuildEnvironmentMetadata?
 
-    var vcsData: VersionControlMetadata?
-
     val outputList: MutableList<T>
-
-    var durationInMs: Long
 }
 
 
-object AndroidBuildInformationCache : BuildInformationCache<AndroidBuildMetadata> {
+object AndroidBuildInformationCache : BuildInformationCache<AndroidBuildInfo> {
 
     override var environmentData: BuildEnvironmentMetadata? = null
 
-    override var vcsData: VersionControlMetadata? = null
-
-    override val outputList: MutableList<AndroidBuildMetadata> = mutableListOf()
-
-    override var durationInMs: Long = 0
+    override val outputList: MutableList<AndroidBuildInfo> = mutableListOf()
 }

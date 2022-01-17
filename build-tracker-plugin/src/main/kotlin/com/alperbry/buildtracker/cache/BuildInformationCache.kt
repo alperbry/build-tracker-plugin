@@ -13,7 +13,7 @@ interface BuildInformationCache <T : BuildInfo> {
 }
 
 
-object AndroidBuildInformationCache : BuildInformationCache<AndroidBuildInfo> {
+class AndroidBuildInformationCache : BuildInformationCache<AndroidBuildInfo> {
 
     override var environmentData: BuildEnvironmentMetadata? = null
 

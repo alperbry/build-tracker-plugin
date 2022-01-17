@@ -11,7 +11,11 @@ interface CacheDependencyProvider {
 
 class CacheDependencyProviderImpl : CacheDependencyProvider {
 
+    private val cache by lazy {
+        AndroidBuildInformationCache()
+    }
+
     override fun androidBuildCache(): BuildInformationCache<AndroidBuildInfo> {
-        return AndroidBuildInformationCache
+        return cache
     }
 }

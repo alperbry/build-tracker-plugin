@@ -10,11 +10,14 @@ import com.alperbry.buildtracker.di.CacheDependencyProviderImpl
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
+import com.alperbry.buildtracker.di.TimerDependencyProvider
+import com.alperbry.buildtracker.di.TimerDependencyProviderImpl
 import com.alperbry.buildtracker.di.VCSDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
 import com.alperbry.buildtracker.task.BuildDataReporterTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
+import com.alperbry.buildtracker.util.timer.Timer
 import com.alperbry.buildtracker.util.timer.TimerImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -27,15 +30,16 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     private val cacheDependencyProvider: CacheDependencyProvider = CacheDependencyProviderImpl()
 
+    private val timerProvider: TimerDependencyProvider = TimerDependencyProviderImpl
+
     private val projectTypeResolver: AndroidProjectTypeResolver
         get() = resolverDependencyProvider.androidProjectTypeResolver()
 
     private val cache: BuildInformationCache<AndroidBuildInfo>
         get() = cacheDependencyProvider.androidBuildCache()
 
-    private val timer = TimerImpl().also {
-        it.start()
-    }
+    private val timer: Timer
+        get() = timerProvider.timer
 
     override fun apply(project: Project) {
 

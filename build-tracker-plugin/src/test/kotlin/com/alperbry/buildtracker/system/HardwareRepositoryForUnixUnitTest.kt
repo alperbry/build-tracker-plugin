@@ -29,7 +29,7 @@ class HardwareRepositoryForUnixUnitTest {
         every { executor.execute(*anyVararg()) } returns "cpu"
 
         // When
-        val result = repositoryForUnix.cpuBrand()
+        val result = repositoryForUnix.cpuModel()
 
         // Then
         verify {
@@ -59,7 +59,7 @@ class HardwareRepositoryForUnixUnitTest {
         every { executor.execute(*anyVararg()) } returns "  12345\n"
 
         // When
-        val result = repositoryForUnix.totalPhysicalMemory()
+        val result = repositoryForUnix.totalPhysicalMemoryInByte()
 
         // Then
         verify {

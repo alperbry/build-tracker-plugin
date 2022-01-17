@@ -6,7 +6,7 @@ class HardwareDataSourceForUnix(
     private val executor: CommandLineExecutor
 ) : HardwareDataSource {
 
-    override fun cpuBrand(): String {
+    override fun cpuModel(): String {
         return executor.execute(
             "sysctl",
             "-n",
@@ -14,7 +14,7 @@ class HardwareDataSourceForUnix(
         )
     }
 
-    override fun totalPhysicalMemory(): Long? {
+    override fun totalPhysicalMemoryInByte(): Long? {
         return executor.execute(
             "sysctl",
             "-n",

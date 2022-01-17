@@ -25,8 +25,8 @@ class HardwareResolverUnitTest {
     @Test
     fun `When hardwareInfo is called, then HardwareInformation object filled with expected values are returned`() {
         // Given
-        every { repository.cpuBrand() } returns "intel"
-        every { repository.totalPhysicalMemory() } returns 17220763648L
+        every { repository.cpuModel() } returns "intel"
+        every { repository.totalPhysicalMemoryInByte() } returns 17220763648L
         every { repository.environmentIdentifier() } returns "MacBook"
         every { repository.coreCount() } returns 6
 
@@ -43,8 +43,8 @@ class HardwareResolverUnitTest {
     @Test
     fun `When hardwareInfo is called and repository cannot return physical memory value, then HardwareInformation object filled -1 as totalMemoryInMb`() {
         // Given
-        every { repository.cpuBrand() } returns "intel"
-        every { repository.totalPhysicalMemory() } returns null
+        every { repository.cpuModel() } returns "intel"
+        every { repository.totalPhysicalMemoryInByte() } returns null
         every { repository.environmentIdentifier() } returns "MacBook"
         every { repository.coreCount() } returns 6
 

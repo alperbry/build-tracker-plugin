@@ -9,8 +9,8 @@ class HardwareResolverImpl(
 
     override fun hardwareInfo(): HardwareInformation {
         return HardwareInformation(
-            cpuModelName = source.cpuBrand(),
-            physicalMemoryInMb = source.totalPhysicalMemory()?.div(MODULO_FROM_BYTE_TO_MB) ?: -1,
+            cpuModelName = source.cpuModel(),
+            physicalMemoryInMb = source.totalPhysicalMemoryInByte()?.div(MODULO_FROM_BYTE_TO_MB) ?: -1,
             environmentIdentifier = source.environmentIdentifier(),
             coreCount = source.coreCount()
         )

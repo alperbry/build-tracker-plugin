@@ -42,6 +42,6 @@ class AndroidBuildDependencyProviderImpl(
     override fun buildResolver(projectType: AndroidProjectType) = when (projectType) {
         APPLICATION -> apkResolver
         LIBRARY -> libraryResolver
-        FEATURE -> libraryResolver
+        FEATURE -> apkResolver
     }
 }

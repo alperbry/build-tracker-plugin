@@ -10,6 +10,11 @@ interface BuildInformationCache <T : BuildInfo> {
     var environmentData: BuildEnvironmentMetadata?
 
     val outputList: MutableList<T>
+
+    fun dispose() {
+        environmentData = null
+        outputList.clear()
+    }
 }
 
 

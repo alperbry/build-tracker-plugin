@@ -8,8 +8,9 @@ import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
 import com.alperbry.buildtracker.util.android.AndroidPluginHelper
 import com.alperbry.buildtracker.util.android.AndroidVariantMapper
 import com.alperbry.buildtracker.util.android.AndroidVariantMapperImpl
-import com.alperbry.buildtracker.util.android.ApplicationBuildTrackerHelper
-import com.alperbry.buildtracker.util.android.LibraryBuildTrackerHelper
+import com.alperbry.buildtracker.util.android.extension.ApplicationBuildTrackerHelper
+import com.alperbry.buildtracker.util.android.extension.BaseAppModuleBuildTrackerHelper
+import com.alperbry.buildtracker.util.android.extension.LibraryBuildTrackerHelper
 
 interface AndroidDependencyProvider {
 
@@ -24,9 +25,9 @@ class AndroidDependencyProviderImpl : AndroidDependencyProvider {
 
     override fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions> {
         return when (type) {
-            APPLICATION -> ApplicationBuildTrackerHelper(variantMapper)
+            APPLICATION -> ApplicationBuildTrackerHelper(variantMapper, BaseAppModuleBuildTrackerHelper(variantMapper))
             LIBRARY -> LibraryBuildTrackerHelper(variantMapper)
-            FEATURE -> ApplicationBuildTrackerHelper(variantMapper)
+            FEATURE -> ApplicationBuildTrackerHelper(variantMapper, BaseAppModuleBuildTrackerHelper(variantMapper)) // feature için ekleme yap
         }
     }
 }

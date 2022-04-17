@@ -1,8 +1,10 @@
 package com.alperbry.buildtracker.data
 
-abstract class BuildInfo {
+interface BuildInfo {
 
-    abstract val id: String
+    val id: String
 
-    abstract val stateIdentifier: String
+    val moduleName: String
+
+    val stateIdentifier: String
 }

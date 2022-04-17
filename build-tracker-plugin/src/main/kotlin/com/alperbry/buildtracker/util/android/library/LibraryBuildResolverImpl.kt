@@ -14,6 +14,7 @@ class LibraryBuildResolverImpl(
     override fun buildInfo(extension: BuildTrackerAndroidExtensions): AndroidBuildInfo {
         return AndroidBuildInfo(
             id = idGenerator.id(),
+            moduleName = extension.module,
             stateIdentifier = vcsInfoResolver.stateIdentifier(),
             versionCode = -1,
             flavorName = extension.variant.flavorName,

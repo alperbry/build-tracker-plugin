@@ -13,13 +13,14 @@ class ApkBuildResolverImpl(
 
     override fun buildInfo(extension: BuildTrackerAndroidExtensions): AndroidBuildInfo {
         val sdkDirectory = extension.sdkDirectory
-        val apkDirectory = extension.variant.outputFiles.first() // todo fixme bundle support needed
+        val apkDirectory = extension.variant.outputFiles.first() // fixme for null safety
 
         return AndroidBuildInfo(
             id = source.applicationId(
                 sdkDirectory,
                 apkDirectory
             ),
+            moduleName = extension.module,
             stateIdentifier = vcsInfoResolver.stateIdentifier(),
             versionCode = source.versionCode(
                 sdkDirectory,

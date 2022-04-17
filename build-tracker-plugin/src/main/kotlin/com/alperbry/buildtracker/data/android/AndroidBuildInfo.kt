@@ -4,8 +4,9 @@ import com.alperbry.buildtracker.data.BuildInfo
 
 data class AndroidBuildInfo(
     override val id: String,
+    override val moduleName: String,
     override val stateIdentifier: String,
     val versionCode: Int?,
     val flavorName: String,
     val buildType: String
-) : BuildInfo()
+) : BuildInfo

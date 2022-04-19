@@ -9,7 +9,7 @@ interface CacheDependencyProvider {
     fun androidBuildCache(): BuildInformationCache<AndroidBuildInfo>
 }
 
-class CacheDependencyProviderImpl : CacheDependencyProvider {
+object CacheDependencyProviderImpl : CacheDependencyProvider {
 
     private val cache by lazy {
         AndroidBuildInformationCache()

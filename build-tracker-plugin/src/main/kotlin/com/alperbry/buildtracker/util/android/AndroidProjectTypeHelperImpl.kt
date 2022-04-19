@@ -13,7 +13,7 @@ class AndroidProjectTypeResolverImpl : AndroidProjectTypeResolver {
         return when {
             isAndroidApplication(pluginAware) -> AndroidProjectType.APPLICATION
             isAndroidLibrary(pluginAware) -> AndroidProjectType.LIBRARY
-            isAndroidFeature(pluginAware)-> AndroidProjectType.FEATURE
+            isAndroidFeature(pluginAware) -> AndroidProjectType.FEATURE
             else -> throw IllegalArgumentException()
         }
     }

@@ -5,16 +5,16 @@ import com.alperbry.buildtracker.data.android.AndroidProjectType.APPLICATION
 import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
 import com.alperbry.buildtracker.data.android.AndroidProjectType.LIBRARY
 import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
-import com.alperbry.buildtracker.util.android.AndroidPluginHelper
+import com.alperbry.buildtracker.util.android.ExtensionExtractor
 import com.alperbry.buildtracker.util.android.AndroidVariantMapper
 import com.alperbry.buildtracker.util.android.AndroidVariantMapperImpl
-import com.alperbry.buildtracker.util.android.extension.ApplicationBuildTrackerHelper
-import com.alperbry.buildtracker.util.android.extension.BaseAppModuleBuildTrackerHelper
-import com.alperbry.buildtracker.util.android.extension.LibraryBuildTrackerHelper
+import com.alperbry.buildtracker.util.android.extension.ApplicationExtensionExtractor
+import com.alperbry.buildtracker.util.android.extension.BaseAppModuleExtensionExtractor
+import com.alperbry.buildtracker.util.android.extension.AndroidLibraryExtensionExtractor
 
 interface AndroidDependencyProvider {
 
-    fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions>
+    fun extensionExtractor(type: AndroidProjectType): ExtensionExtractor<BuildTrackerAndroidExtensions>
 }
 
 class AndroidDependencyProviderImpl : AndroidDependencyProvider {
@@ -23,11 +23,11 @@ class AndroidDependencyProviderImpl : AndroidDependencyProvider {
         AndroidVariantMapperImpl()
     }
 
-    override fun buildTrackerHelper(type: AndroidProjectType): AndroidPluginHelper<BuildTrackerAndroidExtensions> {
+    override fun extensionExtractor(type: AndroidProjectType): ExtensionExtractor<BuildTrackerAndroidExtensions> {
         return when (type) {
-            APPLICATION -> ApplicationBuildTrackerHelper(variantMapper, BaseAppModuleBuildTrackerHelper(variantMapper))
-            LIBRARY -> LibraryBuildTrackerHelper(variantMapper)
-            FEATURE -> ApplicationBuildTrackerHelper(variantMapper, BaseAppModuleBuildTrackerHelper(variantMapper)) // feature için ekleme yap
+            APPLICATION -> ApplicationExtensionExtractor(variantMapper, BaseAppModuleExtensionExtractor(variantMapper))
+            LIBRARY -> AndroidLibraryExtensionExtractor(variantMapper)
+            FEATURE -> ApplicationExtensionExtractor(variantMapper, BaseAppModuleExtensionExtractor(variantMapper))
         }
     }
 }

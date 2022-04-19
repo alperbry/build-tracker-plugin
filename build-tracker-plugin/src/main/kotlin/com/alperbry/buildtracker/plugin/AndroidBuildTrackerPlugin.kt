@@ -7,18 +7,11 @@ import com.alperbry.buildtracker.di.AndroidDependencyProvider
 import com.alperbry.buildtracker.di.AndroidDependencyProviderImpl
 import com.alperbry.buildtracker.di.CacheDependencyProvider
 import com.alperbry.buildtracker.di.CacheDependencyProviderImpl
-import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
-import com.alperbry.buildtracker.di.TimerDependencyProvider
-import com.alperbry.buildtracker.di.TimerDependencyProviderImpl
 import com.alperbry.buildtracker.di.VCSDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
-import com.alperbry.buildtracker.task.BuildEnvironmentMetadataTask
-import com.alperbry.buildtracker.task.BuildDataReporterTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
-import com.alperbry.buildtracker.util.timer.Timer
-import com.alperbry.buildtracker.util.timer.TimerImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -28,9 +21,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     private val androidDependencyProvider: AndroidDependencyProvider = AndroidDependencyProviderImpl()
 
-    private val cacheDependencyProvider: CacheDependencyProvider = CacheDependencyProviderImpl()
-
-    private val timerProvider: TimerDependencyProvider = TimerDependencyProviderImpl
+    private val cacheDependencyProvider: CacheDependencyProvider = CacheDependencyProviderImpl
 
     private val projectTypeResolver: AndroidProjectTypeResolver
         get() = resolverDependencyProvider.androidProjectTypeResolver()
@@ -38,31 +29,13 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
     private val cache: BuildInformationCache<AndroidBuildInfo>
         get() = cacheDependencyProvider.androidBuildCache()
 
-    private val timer: Timer
-        get() = timerProvider.timer
-
     override fun apply(project: Project) {
 
         val vcsDependencyProvider = VCSDependencyProviderImpl(project)
 
-        val osTask = project.tasks.register(
-            "buildEnvironmentInformation",
-            BuildEnvironmentMetadataTask::class.java,
-            EnvironmentInformationDependencyProviderImpl(project),
-            cache
-        )
-
-        val reporterTask = project.tasks.register(
-            "buildTrackerFinalReporter",
-            BuildDataReporterTask::class.java,
-            cache,
-            timer
-        )
-
-        androidDependencyProvider.buildTrackerHelper(
+        androidDependencyProvider.extensionExtractor(
             projectTypeResolver.type(project)
         ).withExtensions(project) { androidExtensions ->
-
             val assembleTask = androidExtensions.variant.assembleTask
 
             val buildInfoTask = project.tasks.register(
@@ -76,18 +49,6 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
             project.tasks.named(assembleTask).configure { assemble ->
                 assemble.finalizedBy(buildInfoTask)
             }
-
-            buildInfoTask.configure {
-                it.dependsOn(osTask)
-                it.finalizedBy(reporterTask)
-            }
-
-            reporterTask.configure {
-                it.mustRunAfter(assembleTask)
-                it.mustRunAfter(BUILD_TASK)
-            }
         }
     }
 }
-
-private const val BUILD_TASK = "build"

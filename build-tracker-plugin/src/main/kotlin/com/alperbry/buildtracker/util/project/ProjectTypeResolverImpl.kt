@@ -11,9 +11,9 @@ class ProjectTypeResolverImpl(
 
     override fun type(pluginAware: Project): GradleProjectType {
         return if (androidResolver.isAndroid(pluginAware)) {
-            GradleProjectType.ANDROID
+            GradleProjectType.Android(androidResolver.type(pluginAware))
         } else {
-            GradleProjectType.OTHER
+            GradleProjectType.Other
         }
     }
 }

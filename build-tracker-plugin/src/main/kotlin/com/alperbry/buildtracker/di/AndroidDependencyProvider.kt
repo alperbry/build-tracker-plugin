@@ -5,7 +5,7 @@ import com.alperbry.buildtracker.data.android.AndroidProjectType.APPLICATION
 import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
 import com.alperbry.buildtracker.data.android.AndroidProjectType.LIBRARY
 import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
-import com.alperbry.buildtracker.util.android.ExtensionExtractor
+import com.alperbry.buildtracker.util.extension.ExtensionExtractor
 import com.alperbry.buildtracker.util.android.AndroidVariantMapper
 import com.alperbry.buildtracker.util.android.AndroidVariantMapperImpl
 import com.alperbry.buildtracker.util.android.extension.ApplicationExtensionExtractor

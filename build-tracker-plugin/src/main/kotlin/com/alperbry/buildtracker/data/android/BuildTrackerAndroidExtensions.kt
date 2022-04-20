@@ -2,7 +2,7 @@ package com.alperbry.buildtracker.data.android
 
 import java.io.File
 
-interface BaseProjectExtension {
+interface BaseModuleExtension {
     val assembleTask: String
 }
 
@@ -12,7 +12,7 @@ data class BuildTrackerAndroidExtensions(
     val module: String,
     val variant: Variant,
     val projectType: AndroidProjectType
-) : BaseProjectExtension {
+) : BaseModuleExtension {
     override val assembleTask: String
         get() = variant.assembleTask
 }

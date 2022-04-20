@@ -18,6 +18,6 @@ class BuildInformationReporterImpl : BuildInformationReporter {
         cache: BuildInformationCache<AndroidBuildInfo>,
         timer: Timer
     ) {
-        println("reporting task, cache: ${timer.duration()}ms \n${cache.environmentData} \n${cache.outputList}")
+        println("reporting task, project: ${cache.projectInfo}, cache: ${timer.duration()}ms \n${cache.environmentData} \n${cache.outputList}")
     }
 }

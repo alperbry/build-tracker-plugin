@@ -2,17 +2,21 @@ package com.alperbry.buildtracker.task
 
 import com.alperbry.buildtracker.cache.BuildInformationCache
 import com.alperbry.buildtracker.data.android.AndroidBuildInfo
+import com.alperbry.buildtracker.data.extension.BuildTrackerExtension
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
-import com.alperbry.buildtracker.di.ExtensionExtractorProvider
+import com.alperbry.buildtracker.di.ModuleExtensionExtractorProvider
 import com.alperbry.buildtracker.report.BuildInformationReporter
+import com.alperbry.buildtracker.util.extension.extension
 import com.alperbry.buildtracker.util.gradle.SimpleBuildListener
+import com.alperbry.buildtracker.util.project.ProjectInformationResolver
 import com.alperbry.buildtracker.util.project.ProjectTypeResolver
 import com.alperbry.buildtracker.util.timer.Timer
 import org.gradle.BuildResult
 import org.gradle.api.invocation.Gradle
 
 class OneTimeTaskManager(
-    private val extensionExtractorProvider: ExtensionExtractorProvider,
+    private val moduleExtensionExtractorProvider: ModuleExtensionExtractorProvider,
+    private val projectInformationResolver: ProjectInformationResolver,
     private val projectTypeResolver: ProjectTypeResolver,
     private val reporter: BuildInformationReporter,
     private val cache: BuildInformationCache<AndroidBuildInfo>, // todo should not be android dependent
@@ -28,15 +32,23 @@ class OneTimeTaskManager(
             cache
         )
 
+        val projectMetadataTask = gradle.rootProject.tasks.register(
+            "projectMetadata",
+            ProjectMetadataTask::class.java,
+            projectInformationResolver,
+            extension<BuildTrackerExtension>(gradle.rootProject),
+            cache
+        )
+
         gradle.rootProject.childProjects.forEach { (_, child) ->
             // todo recursive child check
             if (child.childProjects.isNotEmpty()) return@forEach
 
-            extensionExtractorProvider.extensionExtractor(
+            moduleExtensionExtractorProvider.extensionExtractor(
                 projectTypeResolver.type(child)
             ).withExtensions(child) { extension ->
                 child.tasks.named(extension.assembleTask).configure { assemble ->
-                    assemble.dependsOn(buildEnvironmentTask)
+                    assemble.dependsOn(buildEnvironmentTask, projectMetadataTask)
                 }
             }
         }

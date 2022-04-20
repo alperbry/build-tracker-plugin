@@ -8,7 +8,8 @@ interface OneTimeTaskProvider {
 }
 
 class OneTimeTaskProviderImpl(
-    private val extensionExtractorProvider: ExtensionExtractorProvider = ExtensionExtractorProviderImpl(),
+    private val projectInformationDependencyProvider: ProjectInformationDependencyProvider,
+    private val moduleExtensionExtractorProvider: ModuleExtensionExtractorProvider = ModuleExtensionExtractorProviderImpl(),
     private val resolverProvider: ProjectResolverDependencyProvider = ProjectResolverDependencyProviderImpl(),
     private val reporterDependencyProvider: ReporterDependencyProvider = ReporterDependencyProviderImpl(),
     private val cacheDependencyProvider: CacheDependencyProvider = CacheDependencyProviderImpl,
@@ -17,7 +18,8 @@ class OneTimeTaskProviderImpl(
 
     override fun oneTimeTaskManager(): OneTimeTaskManager {
         return OneTimeTaskManager(
-            extensionExtractorProvider,
+            moduleExtensionExtractorProvider,
+            projectInformationDependencyProvider.projectInformationResolver(),
             resolverProvider.projectTypeResolver(),
             reporterDependencyProvider.reporter(),
             cacheDependencyProvider.androidBuildCache(),

@@ -9,3 +9,15 @@ internal inline fun Project.afterEachSubProjectEvaluated(crossinline block: (Pro
         }
     }
 }
+
+internal fun Project.breadthWiseProjectBranch(): List<Project> {
+    fun Project.hierarchyList(): List<Project> {
+        return if (this == rootProject) {
+            listOf(this)
+        } else {
+            rootProject.hierarchyList() + this
+        }
+    }
+
+    return hierarchyList()
+}

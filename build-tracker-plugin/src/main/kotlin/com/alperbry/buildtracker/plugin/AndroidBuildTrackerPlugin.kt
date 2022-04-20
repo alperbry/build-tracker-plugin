@@ -31,8 +31,6 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
-        val vcsDependencyProvider = VCSDependencyProviderImpl(project)
-
         androidDependencyProvider.extensionExtractor(
             projectTypeResolver.type(project)
         ).withExtensions(project) { androidExtensions ->
@@ -41,7 +39,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
             val buildInfoTask = project.tasks.register(
                 "androidBuildInformation${androidExtensions.variant.variantName.capitalize()}",
                 AndroidOutputMetadataTask::class.java,
-                AndroidBuildDependencyProviderImpl(project, vcsDependencyProvider),
+                AndroidBuildDependencyProviderImpl(project),
                 androidExtensions,
                 cache
             )

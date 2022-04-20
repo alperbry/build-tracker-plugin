@@ -4,11 +4,9 @@ import com.alperbry.buildtracker.apk.ApkDataSource
 import com.alperbry.buildtracker.data.android.AndroidBuildInfo
 import com.alperbry.buildtracker.data.android.BuildTrackerAndroidExtensions
 import com.alperbry.buildtracker.util.android.AndroidBuildResolver
-import com.alperbry.buildtracker.util.vcs.VCSInfoResolver
 
 class ApkBuildResolverImpl(
-    private val source: ApkDataSource,
-    private val vcsInfoResolver: VCSInfoResolver
+    private val source: ApkDataSource
 ) : AndroidBuildResolver {
 
     override fun buildInfo(extension: BuildTrackerAndroidExtensions): AndroidBuildInfo {
@@ -21,7 +19,6 @@ class ApkBuildResolverImpl(
                 apkDirectory
             ),
             moduleName = extension.module,
-            stateIdentifier = vcsInfoResolver.stateIdentifier(),
             versionCode = source.versionCode(
                 sdkDirectory,
                 apkDirectory

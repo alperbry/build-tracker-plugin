@@ -10,8 +10,6 @@ import com.alperbry.buildtracker.util.android.apk.ApkBuildResolverImpl
 import com.alperbry.buildtracker.util.android.id.ProjectIdGeneratorImpl
 import com.alperbry.buildtracker.util.android.library.LibraryBuildResolverImpl
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutorImpl
-import com.alperbry.buildtracker.util.git.GitResolverImpl
-import com.alperbry.buildtracker.util.vcs.VCSInfoResolver
 import org.gradle.api.Project
 
 interface AndroidBuildDependencyProvider {
@@ -20,23 +18,19 @@ interface AndroidBuildDependencyProvider {
 }
 
 class AndroidBuildDependencyProviderImpl(
-    private val project: Project,
-    private val vcsProvider: VCSDependencyProvider
+    private val project: Project
 ) : AndroidBuildDependencyProvider {
 
     private val commandLineExecutor by lazy {
         CommandLineExecutorImpl(project)
     }
 
-    private val vcsResolver: VCSInfoResolver
-        get() = vcsProvider.informationResolver()
-
     private val apkResolver by lazy {
-        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor), vcsResolver)
+        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor))
     }
 
     private val libraryResolver by lazy {
-        LibraryBuildResolverImpl(ProjectIdGeneratorImpl(vcsResolver, project), vcsResolver)
+        LibraryBuildResolverImpl(ProjectIdGeneratorImpl(project))
     }
 
     override fun buildResolver(projectType: AndroidProjectType) = when (projectType) {

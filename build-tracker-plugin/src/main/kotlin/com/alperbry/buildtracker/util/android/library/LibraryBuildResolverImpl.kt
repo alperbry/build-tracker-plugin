@@ -7,15 +7,13 @@ import com.alperbry.buildtracker.util.android.id.ProjectIdGenerator
 import com.alperbry.buildtracker.util.vcs.VCSInfoResolver
 
 class LibraryBuildResolverImpl(
-    private val idGenerator: ProjectIdGenerator,
-    private val vcsInfoResolver: VCSInfoResolver
+    private val idGenerator: ProjectIdGenerator
 ) : AndroidBuildResolver {
 
     override fun buildInfo(extension: BuildTrackerAndroidExtensions): AndroidBuildInfo {
         return AndroidBuildInfo(
             id = idGenerator.id(),
             moduleName = extension.module,
-            stateIdentifier = vcsInfoResolver.stateIdentifier(),
             versionCode = -1,
             flavorName = extension.variant.flavorName,
             buildType = extension.variant.variantName

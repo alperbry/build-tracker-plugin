@@ -1,6 +1,7 @@
 package com.alperbry.buildtracker.plugin
 
 import com.alperbry.buildtracker.data.GradleProjectType
+import com.alperbry.buildtracker.data.extension.BuildTrackerExtension
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
 import com.alperbry.buildtracker.di.TimerDependencyProvider
@@ -25,6 +26,11 @@ open class BuildTrackerPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
+
+        project.extensions.create(
+            BuildTrackerExtension.EXTENSION_NAME,
+            BuildTrackerExtension::class.java
+        )
 
         project.afterEvaluate {
             it.apply { configurationAction ->

@@ -11,7 +11,7 @@ class HardwareDataSourceForUnix(
             "sysctl",
             "-n",
             "machdep.cpu.brand_string"
-        )
+        ).trim()
     }
 
     override fun totalPhysicalMemoryInByte(): Long? {
@@ -35,6 +35,6 @@ class HardwareDataSourceForUnix(
             "sysctl",
             "-n",
             "hw.model"
-        )
+        ).trim()
     }
 }

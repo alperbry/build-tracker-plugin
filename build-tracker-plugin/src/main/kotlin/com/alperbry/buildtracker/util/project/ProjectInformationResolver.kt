@@ -22,7 +22,7 @@ class ProjectInformationResolverImpl(
         buildTrackerExtension: BuildTrackerExtension
     ): ProjectInfo {
 
-        val id = buildTrackerExtension.id ?: project.name
+        val id = buildTrackerExtension.projectId.ifEmpty { project.name }
 
         return ProjectInfo(
             id = id,

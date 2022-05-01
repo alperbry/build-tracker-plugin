@@ -3,6 +3,7 @@ package com.alperbry.buildtracker.data.extension
 import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.api.UnknownDomainObjectException
 import org.gradle.api.model.ObjectFactory
 
 open class BuildTrackerExtension @Inject constructor(
@@ -25,7 +26,11 @@ open class BuildTrackerExtension @Inject constructor(
 
     companion object {
 
-        fun Project.buildTrackerExtensions() = extensions.create(EXTENSION_NAME, BuildTrackerExtension::class.java)
+        fun Project.buildTrackerExtensions() = try {
+            extensions.getByType(BuildTrackerExtension::class.java)
+        } catch (e: UnknownDomainObjectException) {
+            extensions.create(EXTENSION_NAME, BuildTrackerExtension::class.java)
+        }
     }
 }
 

@@ -19,6 +19,7 @@ class OneTimeTaskManager(
     private val projectInformationResolver: ProjectInformationResolver,
     private val projectTypeResolver: ProjectTypeResolver,
     private val reporter: BuildInformationReporter,
+    private val extension: BuildTrackerExtension,
     private val cache: BuildInformationCache<AndroidBuildInfo>, // todo should not be android dependent
     private val timer: Timer,
 ) : SimpleBuildListener() {
@@ -55,7 +56,7 @@ class OneTimeTaskManager(
     }
 
     override fun buildFinished(buildResult: BuildResult) {
-        reporter.report(cache, timer)
+        reporter.report(extension, cache, timer)
         cache.dispose()
     }
 }

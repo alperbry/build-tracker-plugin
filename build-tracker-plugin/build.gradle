@@ -17,12 +17,15 @@ repositories {
     maven {
         url "https://plugins.gradle.org/m2/"
     }
+    mavenLocal()
 }
 
 dependencies {
     gradleApi()
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation 'com.android.tools.build:gradle:4.0.2'
+    implementation 'com.android.tools.build:gradle:7.0.4'
+
+    implementation group: "build-tracker-client", name: "firebase", version: "+", changing: true
 
     testImplementation "io.mockk:mockk:1.12.2"
     testImplementation 'io.kotest:kotest-assertions-core:5.0.3'

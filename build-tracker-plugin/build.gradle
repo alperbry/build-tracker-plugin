@@ -1,8 +1,10 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.10'
     id 'java-gradle-plugin'
     id 'maven-publish'
     id 'java'
+    id 'com.gradle.plugin-publish' version '0.18.0'
 }
 
 sourceCompatibility = 1.8
@@ -24,8 +26,8 @@ dependencies {
     gradleApi()
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.android.tools.build:gradle:7.0.4'
-
-    implementation group: "build-tracker-client", name: "firebase", version: "+", changing: true
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3"
+    implementation "io.github.alperbry.build-tracker-client:firebase:0.1alpha1"
 
     testImplementation "io.mockk:mockk:1.12.2"
     testImplementation 'io.kotest:kotest-assertions-core:5.0.3'

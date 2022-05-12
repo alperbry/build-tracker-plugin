@@ -1,7 +1,7 @@
 package com.alperbry.buildtracker.plugin
 
 import com.alperbry.buildtracker.cache.BuildInformationCache
-import com.alperbry.buildtracker.data.android.AndroidBuildInfo
+import com.alperbry.buildtracker.data.android.AndroidBuildOutputInfo
 import com.alperbry.buildtracker.di.AndroidBuildDependencyProviderImpl
 import com.alperbry.buildtracker.di.AndroidDependencyProvider
 import com.alperbry.buildtracker.di.AndroidDependencyProviderImpl
@@ -9,7 +9,6 @@ import com.alperbry.buildtracker.di.CacheDependencyProvider
 import com.alperbry.buildtracker.di.CacheDependencyProviderImpl
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
-import com.alperbry.buildtracker.di.VCSDependencyProviderImpl
 import com.alperbry.buildtracker.task.AndroidOutputMetadataTask
 import com.alperbry.buildtracker.util.android.AndroidProjectTypeResolver
 import org.gradle.api.Plugin
@@ -26,7 +25,7 @@ open class AndroidBuildTrackerPlugin : Plugin<Project> {
     private val projectTypeResolver: AndroidProjectTypeResolver
         get() = resolverDependencyProvider.androidProjectTypeResolver()
 
-    private val cache: BuildInformationCache<AndroidBuildInfo>
+    private val cache: BuildInformationCache<AndroidBuildOutputInfo>
         get() = cacheDependencyProvider.androidBuildCache()
 
     override fun apply(project: Project) {

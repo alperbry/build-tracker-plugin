@@ -2,11 +2,11 @@ package com.alperbry.buildtracker.di
 
 import com.alperbry.buildtracker.cache.AndroidBuildInformationCache
 import com.alperbry.buildtracker.cache.BuildInformationCache
-import com.alperbry.buildtracker.data.android.AndroidBuildInfo
+import com.alperbry.buildtracker.data.android.AndroidBuildOutputInfo
 
 interface CacheDependencyProvider {
 
-    fun androidBuildCache(): BuildInformationCache<AndroidBuildInfo>
+    fun androidBuildCache(): BuildInformationCache<AndroidBuildOutputInfo>
 }
 
 object CacheDependencyProviderImpl : CacheDependencyProvider {
@@ -15,7 +15,7 @@ object CacheDependencyProviderImpl : CacheDependencyProvider {
         AndroidBuildInformationCache()
     }
 
-    override fun androidBuildCache(): BuildInformationCache<AndroidBuildInfo> {
+    override fun androidBuildCache(): BuildInformationCache<AndroidBuildOutputInfo> {
         return cache
     }
 }

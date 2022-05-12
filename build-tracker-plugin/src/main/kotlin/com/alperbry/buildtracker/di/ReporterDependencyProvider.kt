@@ -1,7 +1,10 @@
 package com.alperbry.buildtracker.di
 
 import com.alperbry.buildtracker.report.BuildInformationReporter
-import com.alperbry.buildtracker.report.BuildInformationReporterImpl
+import com.alperbry.buildtracker.report.CompositeBuildInformationReporter
+import com.alperbry.buildtracker.report.FirebaseBuildInformationReporter
+import com.alperbry.buildtracker.report.LocalBuildInformationReporter
+import com.alperbry.buildtracker.report.client.LocalStorageBuildInfoClientImpl
 
 interface ReporterDependencyProvider {
 
@@ -11,7 +14,12 @@ interface ReporterDependencyProvider {
 class ReporterDependencyProviderImpl : ReporterDependencyProvider {
 
     private val reporter by lazy {
-        BuildInformationReporterImpl()
+        CompositeBuildInformationReporter(
+            listOf(
+                LocalBuildInformationReporter(LocalStorageBuildInfoClientImpl()),
+                FirebaseBuildInformationReporter()
+            )
+        )
     }
 
     override fun reporter(): BuildInformationReporter {

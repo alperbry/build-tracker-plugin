@@ -1,6 +1,6 @@
 package com.alperbry.buildtracker.data
 
-interface BuildInfo {
+interface BuildOutputInfo {
 
     val id: String
 

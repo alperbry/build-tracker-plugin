@@ -1,7 +1,7 @@
 package com.alperbry.buildtracker.task
 
 import com.alperbry.buildtracker.cache.BuildInformationCache
-import com.alperbry.buildtracker.data.android.AndroidBuildInfo
+import com.alperbry.buildtracker.data.android.AndroidBuildOutputInfo
 import com.alperbry.buildtracker.data.extension.BuildTrackerExtension
 import com.alperbry.buildtracker.di.EnvironmentInformationDependencyProviderImpl
 import com.alperbry.buildtracker.di.ModuleExtensionExtractorProvider
@@ -20,7 +20,7 @@ class OneTimeTaskManager(
     private val projectTypeResolver: ProjectTypeResolver,
     private val reporter: BuildInformationReporter,
     private val extension: BuildTrackerExtension,
-    private val cache: BuildInformationCache<AndroidBuildInfo>, // todo should not be android dependent
+    private val cache: BuildInformationCache<AndroidBuildOutputInfo>, // todo should not be android dependent
     private val timer: Timer,
 ) : SimpleBuildListener() {
 
@@ -56,7 +56,9 @@ class OneTimeTaskManager(
     }
 
     override fun buildFinished(buildResult: BuildResult) {
-        reporter.report(extension, cache, timer)
+        cache.snapshot(timer)?.let { buildInfo ->
+            reporter.report(extension, buildInfo)
+        }
         cache.dispose()
     }
 }

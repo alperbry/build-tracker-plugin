@@ -20,6 +20,10 @@ open class BuildTrackerExtension @Inject constructor(
     internal val trackingEnabled: Boolean
         get() = _trackingEnabled
 
+    private var _outputDir: String = ""
+    internal val outputDir: String
+        get() = _outputDir
+
     fun firebase(action: Action<FirebaseStorageExtension>) {
         action.execute(firebase)
     }
@@ -30,6 +34,10 @@ open class BuildTrackerExtension @Inject constructor(
 
     fun trackingEnabled(enabled: Boolean) {
         this._trackingEnabled = enabled
+    }
+
+    fun outputDir(outputDir: String) {
+        this._outputDir = outputDir
     }
 
     companion object {

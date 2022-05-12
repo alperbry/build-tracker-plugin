@@ -7,6 +7,7 @@ import com.alperbry.buildtracker.data.output.HardwareMetadataDTO
 import com.alperbry.buildtracker.data.output.OSMetadataDTO
 import com.alperbry.buildtracker.report.client.LocalStorageBuildInfoClient
 import com.alperbry.buildtracker.util.timestamp.TimestampGenerator
+import java.io.File
 
 class LocalBuildInformationReporter(
     private val client: LocalStorageBuildInfoClient,
@@ -41,7 +42,7 @@ class LocalBuildInformationReporter(
                     },
                     timestamp = timestampGenerator.now()
                 ),
-                directory = null // todo make it configurable
+                directory = if (extension.outputDir.isNotEmpty()) File(extension.outputDir) else null
             )
         }
     }

@@ -12,6 +12,7 @@ open class RootProjectTrackerPlugin : Plugin<Project> {
     override fun apply(project: Project) {
 
         val buildTrackerExtension = project.buildTrackerExtensions()
+        if (buildTrackerExtension.trackingEnabled.not()) return
 
         val oneTimeTaskManagerProvider = OneTimeTaskProviderImpl(
             projectInformationDependencyProvider = ProjectInformationDependencyProviderImpl(

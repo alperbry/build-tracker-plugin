@@ -1,7 +1,6 @@
 package com.alperbry.buildtracker.plugin
 
 import com.alperbry.buildtracker.data.GradleProjectType
-import com.alperbry.buildtracker.data.extension.BuildTrackerExtension
 import com.alperbry.buildtracker.data.extension.BuildTrackerExtension.Companion.buildTrackerExtensions
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProvider
 import com.alperbry.buildtracker.di.ProjectResolverDependencyProviderImpl
@@ -27,7 +26,7 @@ open class BuildTrackerPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        val buildTrackerExtension = project.buildTrackerExtensions()
+        project.buildTrackerExtensions()
 
         project.afterEvaluate {
             it.apply { configurationAction ->

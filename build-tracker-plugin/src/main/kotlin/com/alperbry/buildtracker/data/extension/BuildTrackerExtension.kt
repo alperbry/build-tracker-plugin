@@ -16,12 +16,20 @@ open class BuildTrackerExtension @Inject constructor(
     internal val projectId: String
         get() = _projectId
 
+    private var _trackingEnabled = true
+    internal val trackingEnabled: Boolean
+        get() = _trackingEnabled
+
     fun firebase(action: Action<FirebaseStorageExtension>) {
         action.execute(firebase)
     }
 
     fun projectId(projectId: String) {
         this._projectId = projectId
+    }
+
+    fun trackingEnabled(enabled: Boolean) {
+        this._trackingEnabled = enabled
     }
 
     companion object {

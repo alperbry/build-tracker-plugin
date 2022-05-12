@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class BuildInformationReportDTO(
     val projectId: String,
     val stateIdentifier: String,
-    //val timestamp: Instant
+    val timestamp: String,
     val durationInMs: Long,
     val hardware: HardwareMetadataDTO,
     val operatingSystem: OSMetadataDTO,

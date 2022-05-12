@@ -6,10 +6,11 @@ import com.alperbry.buildtracker.data.output.BuildInformationReportDTO
 import com.alperbry.buildtracker.data.output.HardwareMetadataDTO
 import com.alperbry.buildtracker.data.output.OSMetadataDTO
 import com.alperbry.buildtracker.report.client.LocalStorageBuildInfoClient
-import java.io.File
+import com.alperbry.buildtracker.util.timestamp.TimestampGenerator
 
 class LocalBuildInformationReporter(
-    private val client: LocalStorageBuildInfoClient
+    private val client: LocalStorageBuildInfoClient,
+    private val timestampGenerator: TimestampGenerator
 ) : BuildInformationReporter {
 
     override fun report(
@@ -37,9 +38,10 @@ class LocalBuildInformationReporter(
                         it.mapValues {
                             it.value.toString()
                         }
-                    }
+                    },
+                    timestamp = timestampGenerator.now()
                 ),
-                File("./build/reports/build-tracker") // todo make it configurable
+                directory = null // todo make it configurable
             )
         }
     }

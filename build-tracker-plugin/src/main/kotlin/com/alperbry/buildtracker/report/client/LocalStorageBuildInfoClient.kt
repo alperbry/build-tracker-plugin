@@ -3,28 +3,38 @@ package com.alperbry.buildtracker.report.client
 import com.alperbry.buildtracker.data.output.BuildInformationReportDTO
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.gradle.api.Project
 import java.io.File
 
 interface LocalStorageBuildInfoClient {
 
     fun newBuild(
         buildInformationReport: BuildInformationReportDTO,
-        directory: File
+        directory: File? = null
     )
 }
 
-class LocalStorageBuildInfoClientImpl : LocalStorageBuildInfoClient {
+class LocalStorageBuildInfoClientImpl(
+    private val project: Project
+) : LocalStorageBuildInfoClient {
 
     override fun newBuild(
         buildInformationReport: BuildInformationReportDTO,
-        directory: File
+        directory: File?
     ) {
         val text = Json.encodeToString(buildInformationReport)
 
-        File(directory, "report.json").also { // todo make it configurable
+        val directoryOfReport = directory ?: File(project.buildDir, "$FILE_DIRECTORY$FILE_NAME-${buildInformationReport.timestamp}$FILE_SUFFIX").also {
             it.parentFile.mkdirs()
-        }.bufferedWriter().use {
-            it.write(text)
         }
+
+        directoryOfReport
+            .bufferedWriter().use {
+                it.write(text)
+            }
     }
 }
+
+private const val FILE_DIRECTORY = "/reports/build-tracker/"
+private const val FILE_NAME = "report"
+private const val FILE_SUFFIX = ".json"

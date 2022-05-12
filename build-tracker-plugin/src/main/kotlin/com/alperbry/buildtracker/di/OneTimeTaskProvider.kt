@@ -13,7 +13,7 @@ class OneTimeTaskProviderImpl(
     private val buildTrackerExtension: BuildTrackerExtension,
     private val moduleExtensionExtractorProvider: ModuleExtensionExtractorProvider = ModuleExtensionExtractorProviderImpl(),
     private val resolverProvider: ProjectResolverDependencyProvider = ProjectResolverDependencyProviderImpl(),
-    private val reporterDependencyProvider: ReporterDependencyProvider = ReporterDependencyProviderImpl(),
+    private val reporterDependencyProvider: ReporterDependencyProvider,
     private val cacheDependencyProvider: CacheDependencyProvider = CacheDependencyProviderImpl,
     private val timerDependencyProvider: TimerDependencyProvider = TimerDependencyProviderImpl
 ) : OneTimeTaskProvider {

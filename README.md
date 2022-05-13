@@ -2,7 +2,7 @@
 
 ## What is Build Tracker?
 
-A tiny Gradle Plugin which helps to extract and trace _build_ insights on each _Android_ build.
+A tiny Gradle Plugin which helps to extract and trace _build_ insights on each _Android_ build _continuously_.
 
 ## Features
 - Traces every build process of the given _Android_ project and collects valuable insights.

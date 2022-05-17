@@ -36,24 +36,28 @@ class AndroidBuildInformationCache : BuildInformationCache<AndroidBuildOutputInf
     override fun valid() = outputList.isNotEmpty()
 
     override fun snapshot(timer: Timer): GradleProjectBuildInfo? {
-
-        return projectInfo?.let {
-            GradleProjectBuildInfo(
-                it.id,
-                it.stateIdentifier,
-                timer.duration(),
-                environmentData?.hardwareMetadata ?: HardwareInformation("", 0L, "", 0),
-                environmentData?.osMetadata ?: OperatingSystemInformation(OperatingSystem.OTHER, "", ""),
-                outputList.map {
-                    mapOf(
-                        "id" to it.id,
-                        "moduleName" to it.moduleName,
-                        "versionCode" to it.versionCode as Any,
-                        "flavorName" to it.flavorName,
-                        "buildType" to it.buildType
-                    )
-                }
-            )
+        // todo do not send snapshot if not valid!!!
+        return if (valid().not()) {
+            null
+        } else {
+            projectInfo?.let {
+                GradleProjectBuildInfo(
+                    it.id,
+                    it.stateIdentifier,
+                    timer.duration(),
+                    environmentData?.hardwareMetadata ?: HardwareInformation("", 0L, "", 0),
+                    environmentData?.osMetadata ?: OperatingSystemInformation(OperatingSystem.OTHER, "", ""),
+                    outputList.map {
+                        mapOf(
+                            "id" to it.id,
+                            "moduleName" to it.moduleName,
+                            "versionCode" to it.versionCode as Any,
+                            "flavorName" to it.flavorName,
+                            "buildType" to it.buildType
+                        )
+                    }
+                )
+            }
         }
     }
 }

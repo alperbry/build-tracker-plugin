@@ -15,8 +15,10 @@ class AndroidVariantMapperImpl : AndroidVariantMapper {
         }
 
         return Variant(
+            id = variant.applicationId,
             variantName = variant.name,
             flavorName =  variant.flavorName,
+            versionCode = variant.versionCode,
             outputFiles = outputFiles,
             assembleTask = variant.assembleProvider.name
         )
@@ -30,9 +32,11 @@ class AndroidVariantMapperImpl : AndroidVariantMapper {
         }
 
         return Variant(
+            id = "",
             variantName = variant.name,
             flavorName = variant.flavorName,
             outputFiles = outputFiles,
+            versionCode = -1, // fixme
             assembleTask = variant.assembleProvider.name
         )
     }

@@ -1,6 +1,5 @@
 package com.alperbry.buildtracker.di
 
-import com.alperbry.buildtracker.apk.ApkDataSourceImpl
 import com.alperbry.buildtracker.data.android.AndroidProjectType
 import com.alperbry.buildtracker.data.android.AndroidProjectType.APPLICATION
 import com.alperbry.buildtracker.data.android.AndroidProjectType.FEATURE
@@ -9,7 +8,6 @@ import com.alperbry.buildtracker.util.android.AndroidBuildResolver
 import com.alperbry.buildtracker.util.android.apk.ApkBuildResolverImpl
 import com.alperbry.buildtracker.util.android.id.ProjectIdGeneratorImpl
 import com.alperbry.buildtracker.util.android.library.LibraryBuildResolverImpl
-import com.alperbry.buildtracker.util.commandline.CommandLineExecutorImpl
 import org.gradle.api.Project
 
 interface AndroidBuildDependencyProvider {
@@ -21,12 +19,8 @@ class AndroidBuildDependencyProviderImpl(
     private val project: Project
 ) : AndroidBuildDependencyProvider {
 
-    private val commandLineExecutor by lazy {
-        CommandLineExecutorImpl(project)
-    }
-
     private val apkResolver by lazy {
-        ApkBuildResolverImpl(ApkDataSourceImpl(commandLineExecutor))
+        ApkBuildResolverImpl()
     }
 
     private val libraryResolver by lazy {

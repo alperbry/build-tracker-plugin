@@ -18,8 +18,10 @@ data class BuildTrackerAndroidExtensions(
 }
 
 data class Variant(
+    val id: String,
     val variantName: String,
     val flavorName: String,
     val assembleTask: String,
+    val versionCode: Int,
     val outputFiles: List<File>
 )

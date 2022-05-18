@@ -1,6 +1,8 @@
 package com.alperbry.buildtracker.di
 
+import com.alperbry.buildtracker.data.OperatingSystem
 import com.alperbry.buildtracker.system.HardwareDataSourceForUnix
+import com.alperbry.buildtracker.system.HardwareDataSourceForWindows
 import com.alperbry.buildtracker.system.SystemDataSourceImpl
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutorImpl
 import com.alperbry.buildtracker.util.environment.HardwareResolver
@@ -11,16 +13,27 @@ import org.gradle.api.Project
 
 interface EnvironmentInformationDependencyProvider {
 
-    fun operatingSystemResolver(): OperatingSystemResolver
+    val operatingSystemResolver: OperatingSystemResolver
 
-    fun hardwareResolver(): HardwareResolver
+    val hardwareResolver: HardwareResolver
 }
 
 class EnvironmentInformationDependencyProviderImpl(
     private val project: Project
 ) : EnvironmentInformationDependencyProvider {
 
-    override fun operatingSystemResolver() = OperatingSystemResolverImpl(SystemDataSourceImpl())
+    private val commandLineExecutor by lazy {
+        CommandLineExecutorImpl(project)
+    }
 
-    override fun hardwareResolver() = HardwareResolverImpl(HardwareDataSourceForUnix(CommandLineExecutorImpl(project)))
+    override val operatingSystemResolver = OperatingSystemResolverImpl(SystemDataSourceImpl())
+
+    override val hardwareResolver: HardwareResolver
+        get() {
+            return if (operatingSystemResolver.operatingSystemInformation().name == OperatingSystem.WINDOWS) {
+                HardwareResolverImpl(HardwareDataSourceForWindows())
+            } else {
+                HardwareResolverImpl(HardwareDataSourceForUnix(commandLineExecutor))
+            }
+        }
 }

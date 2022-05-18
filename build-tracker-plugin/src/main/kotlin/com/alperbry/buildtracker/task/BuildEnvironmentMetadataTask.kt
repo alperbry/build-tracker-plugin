@@ -15,10 +15,10 @@ open class BuildEnvironmentMetadataTask @Inject constructor(
 ) : DefaultTask() {
 
     private val osResolver: OperatingSystemResolver
-        get() = provider.operatingSystemResolver()
+        get() = provider.operatingSystemResolver
 
     private val hardwareResolver: HardwareResolver
-        get() = provider.hardwareResolver()
+        get() = provider.hardwareResolver
 
     @TaskAction
     fun execute() {

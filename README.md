@@ -58,7 +58,7 @@ A Gradle project can produce 1 to many artifact with a single command or even mu
 -  Add this to your <b>project root</b> build.gradle file.
 ```bash
 plugins {
-    id 'io.github.alperbry.build-tracker' version '0.1alpha1'
+    id 'io.github.alperbry.build-tracker' version '0.1alpha3'
 }
 ```
 - If you have a _ready_ Firebase project, configure Build Tracker Plugin with your Firebase app credentials to make use of it. Add this to <b>project root</b> build.gradle file.

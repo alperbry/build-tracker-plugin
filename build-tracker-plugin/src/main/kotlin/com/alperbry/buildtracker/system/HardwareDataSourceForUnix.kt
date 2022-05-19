@@ -1,13 +1,15 @@
 package com.alperbry.buildtracker.system
 
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutor
+import com.alperbry.buildtracker.util.commandline.safeExecute
+import java.lang.NumberFormatException
 
 class HardwareDataSourceForUnix(
     private val executor: CommandLineExecutor
 ) : HardwareDataSource {
 
     override fun cpuModel(): String {
-        return executor.execute(
+        return executor.safeExecute(
             "sysctl",
             "-n",
             "machdep.cpu.brand_string"
@@ -15,7 +17,7 @@ class HardwareDataSourceForUnix(
     }
 
     override fun totalPhysicalMemoryInByte(): Long? {
-        return executor.execute(
+        return executor.safeExecute(
             "sysctl",
             "-n",
             "hw.memsize"
@@ -23,15 +25,20 @@ class HardwareDataSourceForUnix(
     }
 
     override fun coreCount(): Int {
-        return executor.execute(
-            "sysctl",
-            "-n",
-            "hw.physicalcpu"
-        ).trim().toInt()
+        return try {
+            executor.safeExecute(
+                "sysctl",
+                "-n",
+                "hw.physicalcpu"
+            ).trim().toInt()
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
+            0
+        }
     }
 
     override fun environmentIdentifier(): String {
-        return executor.execute(
+        return executor.safeExecute(
             "sysctl",
             "-n",
             "hw.model"

@@ -1,6 +1,7 @@
 package com.alperbry.buildtracker.util.git
 
 import com.alperbry.buildtracker.util.commandline.CommandLineExecutor
+import com.alperbry.buildtracker.util.commandline.safeExecute
 import com.alperbry.buildtracker.util.vcs.VCSInfoResolver
 import java.io.File
 
@@ -9,7 +10,7 @@ class GitResolverImpl(
 ) : VCSInfoResolver {
 
     override fun stateIdentifier(): String {
-        return executor.execute(
+        return executor.safeExecute(
             "git",
             "rev-parse",
             "HEAD"
@@ -17,7 +18,7 @@ class GitResolverImpl(
     }
 
     override fun repositoryDirectory(): File {
-        val directory = executor.execute(
+        val directory = executor.safeExecute(
             "git",
             "rev-parse",
             "--show-toplevel"
